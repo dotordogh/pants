@@ -157,7 +157,7 @@ class RunTracker(Subsystem):
     #     }
     #   }
     # }
-    self._target_data = {}
+    self._target_data_to_store = {}
 
   def register_thread(self, parent_workunit):
     """Register the parent workunit for all work in the calling thread.
@@ -305,6 +305,7 @@ class RunTracker(Subsystem):
     if target_data:
       run_information['target_data'] = ast.literal_eval(target_data)
 
+    print(run_information)
     stats = {
       'run_info': run_information,
       'cumulative_timings': self.cumulative_timings.get_all(),
@@ -373,8 +374,8 @@ class RunTracker(Subsystem):
       # If the goal is clean-all then the run info dir no longer exists, so ignore that error.
       self.run_info.add_info('outcome', outcome_str, ignore_errors=True)
 
-    if self._target_data:
-      self.run_info.add_info('target_data', self._target_data)
+    if self._target_data_to_store:
+      self.run_info.add_info('target_data', self._target_data_to_store)
 
     self.report.close()
     self.store_stats()
@@ -414,6 +415,41 @@ class RunTracker(Subsystem):
     """
     SubprocPool.shutdown(self._aborted)
 
+  @staticmethod
+  def create_dict_with_nested_keys_and_val(all_keys, value, index):
+    """ Recursively constructs a nested dictionary with the keys pointing to the value.
+
+    :param dict or string value: The value of the information being stored.
+    :param int index: The index into the list of keys.
+    :return: dict of nested keys leading to the value.
+    """
+    print(all_keys)
+    if index > 0:
+      new_val = {all_keys[index]: value}
+      return RunTracker.create_dict_with_nested_keys_and_val(all_keys, new_val, index - 1)
+    elif index == 0:
+      return {all_keys[index]: value}
+
+
+  @staticmethod
+  def merge_target_data(data, keys, val, index):
+    if index < len(keys):
+      if data:
+        for k, v in data.items():
+          if k == keys[index] and isinstance(v, dict):
+            RunTracker.merge_target_data(v, keys, val, index+1)
+          else:
+            subset = keys[index:]
+            new_val = RunTracker.create_dict_with_nested_keys_and_val(subset, val, len(subset) - 1)
+            print(new_val)
+            data.update(new_val)
+      else:
+        subset = keys[index:]
+        new_val = RunTracker.create_dict_with_nested_keys_and_val(subset, val, len(subset) - 1)
+        print(new_val)
+        data.update(new_val)
+
+
   def report_target_info(self, scope, target, keys, val):
     """Add target information to run_info under target_data.
 
@@ -427,25 +463,20 @@ class RunTracker(Subsystem):
 
     :API: public
     """
-    def create_dict_with_nested_keys_and_val(value, index):
-      """ Recursively constructs a nested dictionary with the keys pointing to the value.
 
-      :param dict or string value: The value of the information being stored.
-      :param int index: The index into the list of keys.
-      :return: dict of nested keys leading to the value.
-      """
-      if index > 0:
-        new_val = {keys[index]: value}
-        create_dict_with_nested_keys_and_val(new_val, index - 1)
-      else:
-        return {keys[index]: value}
 
-    val_to_store = create_dict_with_nested_keys_and_val(val, len(keys) - 1)
-    target_data = self._target_data.get(target, None)
-    if target_data is None:
-      self._target_data.update({target: {scope: val_to_store}})
-    else:
-      scope_data = self._target_data[target].get(scope, None)
-      if scope_data is None:
-        self._target_data[target][scope] = scope_data = {}
-      scope_data.update(val_to_store)
+    # val_to_store = create_dict_with_nested_keys_and_val(val, len(keys) - 1)
+
+
+    new_key_list = [target, scope] + keys
+    print(new_key_list)
+    merge_target_data(self._target_data_to_store, new_key_list, val, 0)
+    # merge_info_with_target_data(self._target_data_to_store, new_key_list, val, 0)
+    # target_data = self._target_data_to_store.get(target, None)
+    # if target_data is None:
+    #   self._target_data_to_store.update({target: {scope: merge_target_data({}, val, 0)}})
+    # else:
+    #   scope_data = self._target_data_to_store[target].get(scope, None)
+    #   if scope_data is None:
+    #     self._target_data_to_store[target][scope] = scope_data = {}
+    #   merge_dict_with_target_data(scope_data, val, 0)

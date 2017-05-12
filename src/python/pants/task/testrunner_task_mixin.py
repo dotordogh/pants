@@ -66,7 +66,7 @@ class TestRunnerTaskMixin(object):
       all_targets = self._get_targets()
       self._execute(all_targets)
 
-  def report_test_info(self, scope, target, test_name, test_info):
+  def report_test_info(self, scope, target, keys, test_info):
     """Add test information to target information.
 
     :param string scope: The scope for which we are reporting information.
@@ -78,7 +78,7 @@ class TestRunnerTaskMixin(object):
       address = target.address.spec
       target_type = target.type_alias
       self.context.run_tracker.report_target_info('GLOBAL', address, ['target_type'], target_type)
-      self.context.run_tracker.report_target_info(scope, address, [test_name], test_info)
+      self.context.run_tracker.report_target_info(scope, address, keys, test_info)
 
   @staticmethod
   def parse_test_info(xml_path, error_handler, additional_testcase_attributes=None):

@@ -434,7 +434,10 @@ class JUnitRun(TestRunnerTaskMixin, JvmToolTaskMixin, JvmTask):
           for test_name, test_info in tests_info.items():
             test_item = Test(test_info['classname'], test_name)
             test_target = test_registry.get_owning_target(test_item)
-            self.report_test_info(self.options_scope, test_target, test_name, test_info)
+            for test_info_key, test_info_val in test_info.items():
+              print(test_info_key, test_info_val)
+              thing_to_report = [test_name, test_info_key]
+              self.report_test_info(self.options_scope, test_target, thing_to_report, test_info_val)
 
           if result != 0 and self._fail_fast:
             break
