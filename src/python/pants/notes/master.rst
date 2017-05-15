@@ -4,6 +4,106 @@ Master Pre-Releases
 This document describes ``dev`` releases which occur weekly from master, and which do
 not undergo the vetting associated with ``stable`` releases.
 
+1.4.0.dev0 (5/12/2017)
+----------------------
+
+API Changes
+~~~~~~~~~~~
+
+* Support "exports" for thrift targets (#4564)
+  `PR #4564 <https://github.com/pantsbuild/pants/pull/4564>`_
+
+* Make setup_py tasks provide 'python_dists' product. (#4498)
+  `PR #4498 <https://github.com/pantsbuild/pants/pull/4498>`_
+
+* Include API that will store target info in run_tracker (#4561)
+  `PR #4561 <https://github.com/pantsbuild/pants/pull/4561>`_
+
+Bugfixes
+~~~~~~~~
+
+* Fix built-in macros for the mutable ParseContext (#4583)
+  `PR #4583 <https://github.com/pantsbuild/pants/pull/4583>`_
+
+* Exclude only roots for exclude-target-regexp in v2 (#4578)
+  `PR #4578 <https://github.com/pantsbuild/pants/pull/4578>`_
+  `PR #451) <https://github.com/twitter/commons/pull/451)>`_
+
+* Fix a pytest path mangling bug. (#4565)
+  `PR #4565 <https://github.com/pantsbuild/pants/pull/4565>`_
+
+Refactoring, Improvements, and Tooling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Specify a workunit for node.js test and run. (#4572)
+  `PR #4572 <https://github.com/pantsbuild/pants/pull/4572>`_
+
+* Include transitive Resources targets in PrepareResources. (#4569)
+  `PR #4569 <https://github.com/pantsbuild/pants/pull/4569>`_
+
+* [engine] Don't recreate a graph just for validation (#4566)
+  `PR #4566 <https://github.com/pantsbuild/pants/pull/4566>`_
+
+Documentation Updates
+~~~~~~~~~~~~~~~~~~~~~
+
+* Update release docs to use a label instead of a spreadsheet for backports. (#4574)
+  `PR #4574 <https://github.com/pantsbuild/pants/pull/4574>`_
+
+
+1.3.0rc0 (05/08/2017)
+---------------------
+
+The first release candidate for the 1.3.0 stable release branch! Almost 7 months
+in the making, this release brings a huge set of changes, which will be summarized
+for the 1.3.0 final release.
+
+Please test this release candidate to help ensure a stable stable 1.3.0 release!
+
+API Changes
+~~~~~~~~~~~
+
+* [engine] Deprecate and replace `traversable_dependency_specs`. (#4542)
+  `PR #4542 <https://github.com/pantsbuild/pants/pull/4542>`_
+
+* Move scalastyle and java checkstyle into the `lint` goal (#4540)
+  `PR #4540 <https://github.com/pantsbuild/pants/pull/4540>`_
+
+Bugfixes
+~~~~~~~~
+
+* Warn when implicit_sources would be used, but is disabled (#4559)
+  `PR #4559 <https://github.com/pantsbuild/pants/pull/4559>`_
+
+* Ignore dot-directories by default (#4556)
+  `PR #4556 <https://github.com/pantsbuild/pants/pull/4556>`_
+
+* Dockerize native engine builds. (#4554)
+  `PR #4554 <https://github.com/pantsbuild/pants/pull/4554>`_
+
+* Make "changed" tasks work with deleted files (#4546)
+  `PR #4546 <https://github.com/pantsbuild/pants/pull/4546>`_
+
+* Fix tag builds after the more-complete isort edit. (#4532)
+  `PR #4532 <https://github.com/pantsbuild/pants/pull/4532>`_
+
+Refactoring, Improvements, and Tooling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* [engine] Support tracebacks in engine traces; only show them w/ flag (#4549)
+  `PR #4549 <https://github.com/pantsbuild/pants/pull/4549>`_
+
+* Fix two usages of Address.build_file that avoided detection during the deprecation. (#4538)
+  `PR #4538 <https://github.com/pantsbuild/pants/pull/4538>`_
+
+Documentation Updates
+~~~~~~~~~~~~~~~~~~~~~
+
+* Update target scope docs (#4553)
+  `PR #4553 <https://github.com/pantsbuild/pants/pull/4553>`_
+
+* [engine] use rust doc comments instead of javadoc style comments (#4550)
+  `PR #4550 <https://github.com/pantsbuild/pants/pull/4550>`_
 
 1.3.0.dev19 (4/28/2017)
 -----------------------

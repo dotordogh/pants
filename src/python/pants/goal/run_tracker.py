@@ -157,7 +157,7 @@ class RunTracker(Subsystem):
     #     }
     #   }
     # }
-    self._target_data_to_store = {}
+    self._target_to_data = {}
 
   def register_thread(self, parent_workunit):
     """Register the parent workunit for all work in the calling thread.
@@ -373,8 +373,8 @@ class RunTracker(Subsystem):
       # If the goal is clean-all then the run info dir no longer exists, so ignore that error.
       self.run_info.add_info('outcome', outcome_str, ignore_errors=True)
 
-    if self._target_data_to_store:
-      self.run_info.add_info('target_data', self._target_data_to_store)
+    if self._target_to_data:
+      self.run_info.add_info('target_data', self._target_to_data)
 
     self.report.close()
     self.store_stats()
@@ -479,4 +479,4 @@ class RunTracker(Subsystem):
     """
     new_key_list = [target, scope]
     new_key_list += keys
-    RunTracker.merge_list_of_keys_into_dict(self._target_data_to_store, new_key_list, val, 0)
+    RunTracker.merge_list_of_keys_into_dict(self._target_to_data, new_key_list, val, 0)
