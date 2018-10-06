@@ -440,4 +440,4 @@ class DependencyUsageGraph(object):
         'dependencies': [gen_dep_edge(node, edge, dep_tgt, node.dep_aliases.get(dep_tgt, {}))
                          for dep_tgt, edge in node.dep_edges.items()],
       }
-    yield json.dumps(res_dict, indent=2, sort_keys=True)
+    yield json.dumps(res_dict, indent=2, sort_keys=True, ensure_ascii=False)
